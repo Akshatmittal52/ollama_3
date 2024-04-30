@@ -69,8 +69,8 @@ class ChatPDFAssistant:
                       | StrOutputParser())
 
     def ask(self, query: str):
-        if not self.chain:
-            return "Please, add a PDF document first."
+        '''if not self.chain:
+            return "Please, add a PDF document first."'''
         return self.chain.invoke(query)
 
     def clear(self):
