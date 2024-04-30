@@ -41,13 +41,22 @@ class ChatPDFAssistant:
             [/INST]
             """
         )
+        
 
-    def ingest_pdf(self, pdf_file):
+    '''def ingest_pdf(self, pdf_file):
         docs = PyPDFLoader(file_content=pdf_file).load()
         chunks = self.text_splitter.split_documents(docs)
         chunks = filter_complex_metadata(chunks)
         self.vector_store = Chroma.from_documents(documents=chunks, embedding=FastEmbedEmbeddings())
+        self._prepare_retriever()'''
+        
+    def ingest_pdf(self, pdf_file):
+        docs = PyPDFLoader(file_path=pdf_file.name).load()
+        chunks = self.text_splitter.split_documents(docs)
+        chunks = filter_complex_metadata(chunks)
+        self.vector_store = Chroma.from_documents(documents=chunks, embedding=FastEmbedEmbeddings())
         self._prepare_retriever()
+
 
     def _prepare_retriever(self):
         self.retriever = self.vector_store.as_retriever(
@@ -97,11 +106,17 @@ def handle_file_upload():
         st.session_state["messages"] = []
         st.session_state["user_input"] = ""
 
-    for file in st.session_state["file_uploader"]:
+    '''for file in st.session_state["file_uploader"]:
         if file.type == "application/pdf":
             with st.spinner(f"Reading {file.name}"):
                 file_content = file.read()
-                st.session_state["assistant"].ingest_pdf(file_content)
+                st.session_state["assistant"].ingest_pdf(file_content)'''
+    
+    for file in st.session_state["file_uploader"]:
+        if file.type == "application/pdf":
+            with st.spinner(f"Reading {file.name}"):
+                st.session_state["assistant"].ingest_pdf(file)
+
 
 
 def setup_chat_page():
