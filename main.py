@@ -113,7 +113,7 @@ def handle_file_upload():
                 st.session_state["assistant"].ingest_pdf(file_content)'''
     
     for file in st.session_state["file_uploader"]:
-        if file.type == "application/pdf":
+        if file.type == "pdf":
             with st.spinner(f"Reading {file.name}"):
                 st.session_state["assistant"].ingest_pdf(file)
 
